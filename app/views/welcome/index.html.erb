@@ -1,0 +1,40 @@
+<br /><br /><br />
+<%= render 'shared/header' %>
+<div align = "center" >
+    <div style ="background-image:url(/images/back1.jpg);background-repeat: no-repeat; width :640px; height :200px; ">
+      <br />
+      <h3>住所から経度と緯度を検索します。</h3>
+      <br />例:神奈川県大和市中央林間3
+          <%= form_tag(:action => :index) do %>
+        <br />search:<%= text_field_tag(:ad, params[:ad]) %>      <%= submit_tag("検索") %>
+    <% end %>
+  </div>   
+        <%
+        if @longitude != nil
+        	@lat = @longitude['lat']
+        	@lng = @longitude['lng']
+        %>	
+       
+       	<div id="map" style="width: 500px; height: 300px; border: 2px solid #E8E8E8;"></div>       	
+        <%end%>
+        
+    <script type="text/javascript">
+    //<![CDATA[
+    if (GBrowserIsCompatible()) {
+      var map = new GMap2(document.getElementById("map"));
+      map.addControl(new GLargeMapControl());
+      map.addControl(new GMapTypeControl());
+      map.setCenter(new GLatLng(<%= @lat %>,<%= @lng %>), 15);
+         map.openInfoWindow(map.getCenter(),
+             document.createTextNode("緯度<%= @lat %>  経度 <%= @lng %> "));
+    }
+        var marker = new GMarker(new GLatLng(<%= @lat %>,<%= @lng %>));
+        map.addOverlay(marker);
+    //]]>
+    </script>   
+    
+</div>
+
+ <%= render 'shared/footer' %>
+
+<%= @text %>
